@@ -59,7 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		030F6FEE2415C5E300A43F01 /* ProcreateViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProcreateViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		030F6FEE2415C5E300A43F01 /* Procreate Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Procreate Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		030F6FF12415C5E300A43F01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		030F6FF32415C5E300A43F01 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		030F6FF82415C5E400A43F01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		030F6FEF2415C5E300A43F01 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				030F6FEE2415C5E300A43F01 /* ProcreateViewer.app */,
+				030F6FEE2415C5E300A43F01 /* Procreate Viewer.app */,
 				030F70082415C6B500A43F01 /* QuickLook.appex */,
 				036AFC0B241800350075400A /* Thumbnail.appex */,
 			);
@@ -201,7 +201,7 @@
 				036AFBB7241687680075400A /* ZIPFoundation */,
 			);
 			productName = ProcreateViewer;
-			productReference = 030F6FEE2415C5E300A43F01 /* ProcreateViewer.app */;
+			productReference = 030F6FEE2415C5E300A43F01 /* Procreate Viewer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		030F70072415C6B500A43F01 /* QuickLook */ = {
@@ -506,7 +506,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Procreate Viewer";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -526,7 +526,7 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Procreate Viewer";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
