@@ -23,6 +23,7 @@
 		036AFC11241800350075400A /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036AFC10241800350075400A /* ThumbnailProvider.swift */; };
 		036AFC16241800350075400A /* Thumbnail.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 036AFC0B241800350075400A /* Thumbnail.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		036AFC1B241800850075400A /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 036AFC1A241800850075400A /* ZIPFoundation */; };
+		037B4042241821D200392452 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037B4041241821D200392452 /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		036AFC10241800350075400A /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		036AFC12241800350075400A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		036AFC13241800350075400A /* Thumbnail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnail.entitlements; sourceTree = "<group>"; };
+		037B4041241821D200392452 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				030F6FFD2415C5E400A43F01 /* Info.plist */,
 				030F6FFE2415C5E400A43F01 /* ProcreateViewer.entitlements */,
 				036AFBB924168C030075400A /* ViewController.swift */,
+				037B4041241821D200392452 /* InfoViewController.swift */,
 			);
 			path = ProcreateViewer;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 			files = (
 				036AFBBA24168C030075400A /* ViewController.swift in Sources */,
 				030F6FF42415C5E300A43F01 /* Document.swift in Sources */,
+				037B4042241821D200392452 /* InfoViewController.swift in Sources */,
 				030F6FF22415C5E300A43F01 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

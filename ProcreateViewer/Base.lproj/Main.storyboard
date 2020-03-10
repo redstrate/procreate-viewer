@@ -90,25 +90,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
                                     <items>
-                                        <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="toggleToolbarShown:" target="Ady-hI-5gd" id="BXY-wc-z0C"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
+                                        <menuItem title="Show Info" tag="67" id="Fkh-F1-E0e">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
+                                                <action selector="showInfoAction:" target="Voe-Tx-rLC" id="3A0-GP-3ZY"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
-                                        <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
-                                            <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
@@ -164,8 +152,55 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ProcreateViewer" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="JdS-Pg-8N9"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
+        </scene>
+        <!--Info View Controller-->
+        <scene sceneID="nJy-a4-E0d">
+            <objects>
+                <viewController showSeguePresentationStyle="single" id="wda-Mt-beD" customClass="InfoViewController" customModule="ProcreateViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="3vu-Kd-l73">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="85"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u9u-el-oA4">
+                                <rect key="frame" x="18" y="49" width="444" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" placeholderString="Time Spent" id="UBd-vS-gNL">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2oe-to-Rcz">
+                                <rect key="frame" x="407" y="13" width="59" height="32"/>
+                                <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BnS-yc-3ej">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dismissController:" target="wda-Mt-beD" id="LJb-SK-4qT"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="top" secondItem="u9u-el-oA4" secondAttribute="bottom" constant="8" symbolic="YES" id="BYm-qe-WxD"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="top" secondItem="3vu-Kd-l73" secondAttribute="top" constant="20" symbolic="YES" id="HaC-Tk-Y3y"/>
+                            <constraint firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" constant="20" symbolic="YES" id="Qfn-KK-5Ya"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="3vu-Kd-l73" secondAttribute="leading" constant="20" symbolic="YES" id="TpT-D9-UgA"/>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" id="ZND-Qt-9wv"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="timeSpentLabel" destination="u9u-el-oA4" id="LeI-31-Z8r"/>
+                    </connections>
+                </viewController>
+                <customObject id="Tam-yi-Bux" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="786" y="286.5"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -210,11 +245,12 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="ipM-NH-wUM" id="RT5-09-Hwj"/>
+                        <segue destination="wda-Mt-beD" kind="sheet" identifier="showInfo" id="obo-Yt-yny"/>
                     </connections>
                 </viewController>
                 <customObject id="2Tp-Fl-jBw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="59" y="761"/>
         </scene>
     </scenes>
 </document>
