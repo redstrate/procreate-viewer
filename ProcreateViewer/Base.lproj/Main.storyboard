@@ -149,7 +149,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ProcreateViewer" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Procreate_Viewer" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="JdS-Pg-8N9"/>
@@ -159,15 +159,26 @@
         <!--Info View Controller-->
         <scene sceneID="nJy-a4-E0d">
             <objects>
-                <viewController showSeguePresentationStyle="single" id="wda-Mt-beD" customClass="InfoViewController" customModule="ProcreateViewer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController showSeguePresentationStyle="single" id="wda-Mt-beD" customClass="InfoViewController" customModule="Procreate_Viewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="3vu-Kd-l73">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="85"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="109"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u9u-el-oA4">
-                                <rect key="frame" x="18" y="49" width="444" height="16"/>
+                                <rect key="frame" x="18" y="73" width="444" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" placeholderString="Time Spent" id="UBd-vS-gNL">
                                     <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8HM-na-o1E">
+                                <rect key="frame" x="18" y="49" width="444" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" id="cl0-u1-l9k">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <string key="placeholderString" base64-UTF8="YES">
+Dk51bWJlciBvZiBMYXllcnM6A
+</string>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -187,20 +198,24 @@ DQ
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="2oe-to-Rcz" firstAttribute="top" secondItem="u9u-el-oA4" secondAttribute="bottom" constant="8" symbolic="YES" id="BYm-qe-WxD"/>
-                            <constraint firstItem="u9u-el-oA4" firstAttribute="top" secondItem="3vu-Kd-l73" secondAttribute="top" constant="20" symbolic="YES" id="HaC-Tk-Y3y"/>
-                            <constraint firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" constant="20" symbolic="YES" id="Qfn-KK-5Ya"/>
-                            <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="3vu-Kd-l73" secondAttribute="leading" constant="20" symbolic="YES" id="TpT-D9-UgA"/>
-                            <constraint firstItem="2oe-to-Rcz" firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" id="ZND-Qt-9wv"/>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="top" secondItem="8HM-na-o1E" secondAttribute="bottom" constant="8" symbolic="YES" id="85g-Dp-ezi"/>
+                            <constraint firstItem="8HM-na-o1E" firstAttribute="top" secondItem="u9u-el-oA4" secondAttribute="bottom" constant="8" symbolic="YES" id="CA1-bq-4Dc"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="trailing" secondItem="8HM-na-o1E" secondAttribute="trailing" id="ILX-8S-pOI"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="top" secondItem="3vu-Kd-l73" secondAttribute="top" constant="20" symbolic="YES" id="IQj-on-T5L"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="8HM-na-o1E" secondAttribute="leading" id="KJd-X5-kxh"/>
+                            <constraint firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" constant="20" symbolic="YES" id="PlA-zS-FpK"/>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="trailing" secondItem="8HM-na-o1E" secondAttribute="trailing" id="Whu-Lh-znF"/>
+                            <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="3vu-Kd-l73" secondAttribute="leading" constant="20" symbolic="YES" id="Xzy-ZR-1ha"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="layerCountLabel" destination="8HM-na-o1E" id="Vnq-ev-JGx"/>
                         <outlet property="timeSpentLabel" destination="u9u-el-oA4" id="LeI-31-Z8r"/>
                     </connections>
                 </viewController>
                 <customObject id="Tam-yi-Bux" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="786" y="286.5"/>
+            <point key="canvasLocation" x="786" y="298.5"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -226,7 +241,7 @@ DQ
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="5gI-5U-AMq" customClass="ViewController" customModule="ProcreateViewer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5gI-5U-AMq" customClass="ViewController" customModule="Procreate_Viewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ERx-hH-rdd">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>

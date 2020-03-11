@@ -1,12 +1,32 @@
 import Cocoa
 import ZIPFoundation
+import CoreFoundation
 
-struct DocumentInfo {
-    var tracked_time: Int = 0
+struct SilicaLayer {
+    
+}
+
+struct SilicaDocument {
+    var trackedTime: Int = 0
+    
+    var layers: [SilicaLayer] = []
+}
+
+// Since this is a C-function we have to unsafe cast...
+func objectRefGetValue(_ objectRef : CFTypeRef) -> UInt32 {
+    return _CFKeyedArchiverUIDGetValue(unsafeBitCast(objectRef, to: CFKeyedArchiverUIDRef.self))
 }
 
 class Document: NSDocument {
-    var info = DocumentInfo()
+    var dict: NSDictionary?
+    
+    let DocumentClassName = "SilicaDocument"
+    let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
+    let LayersKey = "layers"
+    
+    let LayerClassName = "SilicaLayer"
+    
+    var info = SilicaDocument()
     
     var thumbnail: NSImage? = nil
 
@@ -18,6 +38,72 @@ class Document: NSDocument {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
         let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as! NSWindowController
         self.addWindowController(windowController)
+    }
+    
+    /*
+     Pass in an object from the $object array, which always contains a $class key.
+     */
+    func getDocumentClassName(dict: NSDictionary) -> String? {
+        let objectsArray = self.dict?["$objects"] as! NSArray
+
+        if let value = dict["$class"] {
+            let classObjectId = objectRefGetValue(value as CFTypeRef)
+            let classObject = objectsArray[Int(classObjectId)] as! NSDictionary
+            
+            return classObject["$classname"] as? String
+        }
+        
+        return nil
+    }
+    
+    func parseSilicaLayer(dict: NSDictionary) {
+        if getDocumentClassName(dict: dict) == LayerClassName {
+            let layer = SilicaLayer()
+            // TODO: fill in layer information
+            
+            info.layers.append(layer)
+        }
+    }
+    
+    func parseSilicaDocument(dict: NSDictionary) {
+        let objectsArray = self.dict?["$objects"] as! NSArray
+
+        if getDocumentClassName(dict: dict) == DocumentClassName {
+            info.trackedTime = (dict[TrackedTimeKey] as! NSNumber).intValue
+                        
+            let layersClassKey = dict[LayersKey]
+            let layersClassID = objectRefGetValue(layersClassKey as CFTypeRef)
+            let layersClass = objectsArray[Int(layersClassID)] as! NSDictionary
+                        
+            let array = layersClass["NS.objects"] as! NSArray
+            
+            for object in array {
+                let layerClassID = objectRefGetValue(object as CFTypeRef)
+                let layerClass = objectsArray[Int(layerClassID)] as! NSDictionary
+                                
+                parseSilicaLayer(dict: layerClass)
+            }
+        }
+    }
+    
+    func parseDocument(dict: NSDictionary) {
+        // double check if this archive is really correct
+        if let value = dict["$version"] {
+            if (value as! Int) != 100000 {
+                Swift.print("This is not a valid document!")
+            }
+            
+            self.dict = dict
+            
+            let objectsArray = dict["$objects"] as! NSArray
+            
+            // let's read the $top class, which is always going to be SilicaDocument type.
+            let topObject = dict["$top"] as! NSDictionary
+            let topClassID = objectRefGetValue(topObject["root"] as CFTypeRef)
+            let topObjectClass = objectsArray[Int(topClassID)] as! NSDictionary
+                        
+            parseSilicaDocument(dict: topObjectClass)
+        }
     }
 
     override func read(from data: Data, ofType typeName: String) throws {
@@ -65,14 +151,9 @@ class Document: NSDocument {
             fatalError("failed to deserialize")
         }
         
-        // this is temporary, as we're just hoping that the keyed archive fits our requirements...
         let dict = (propertyList as! NSDictionary);
         
-        let objects = dict["$objects"] as! NSArray
-        
-        let tracked_time = (objects[1] as! NSDictionary)["SilicaDocumentTrackedTimeKey"]
-        
-        info.tracked_time = (tracked_time as! NSNumber).intValue
+        parseDocument(dict: dict)
     }
 }
 
