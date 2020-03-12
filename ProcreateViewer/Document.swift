@@ -19,6 +19,8 @@ func objectRefGetValue(_ objectRef : CFTypeRef) -> UInt32 {
 }
 
 class Document: NSDocument {
+    var data: Data? // oh no...
+    
     var dict: NSDictionary?
     
     let DocumentClassName = "SilicaDocument"
@@ -63,46 +65,59 @@ class Document: NSDocument {
 
         if getDocumentClassName(dict: dict) == LayerClassName {
             var layer = SilicaLayer()
-            
-            dump(dict, maxDepth: 2)
-            
+                        
             let UUIDKey = dict["UUID"]
             let UUIDClassID = objectRefGetValue(UUIDKey as CFTypeRef)
             let UUIDClass = objectsArray[Int(UUIDClassID)] as! NSString
-                        
+            
+            var chunkPaths: [Entry] = []
+            
             archive.forEach { (entry: Entry) in
-                if entry.path.contains(String(UUIDClass)) {                    
-                    var lzo_data = Data()
-                    
-                    do {
-                        try archive.extract(entry, consumer: { (d) in
-                            lzo_data.append(d)
-                        })
-                    } catch {
-                        Swift.print("Extracting entry from archive failed with error:\(error)")
-                    }
-                    
-                    let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: info.tileSize * info.tileSize * 4)
-                    
-                    lzo_data.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Void in
-                        var len = lzo_uint(info.tileSize * info.tileSize * 4)
-                        
-                        lzo1x_decompress_safe(bytes.baseAddress!.assumingMemoryBound(to: uint8.self), lzo_uint(lzo_data.count), uint8Pointer, &len, nil)
+                if entry.path.contains(String(UUIDClass)) {
+                    chunkPaths.append(entry)
+                }
+            }
+            
+            layer.chunks = Array(repeating: NSImage(), count: chunkPaths.count)
+            
+            DispatchQueue.concurrentPerform(iterations: chunkPaths.count) { (i: Int) in
+                let entry = chunkPaths[i]
+                
+                guard let archive = Archive(data: self.data!, accessMode: Archive.AccessMode.read) else  {
+                    return
+                }
+                
+                var lzo_data = Data()
+                
+                do {
+                    try archive.extract(entry, consumer: { (d) in
+                        lzo_data.append(d)
                     })
+                } catch {
+                    Swift.print("Extracting entry from archive failed with error:\(error)")
+                }
+                
+                let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: info.tileSize * info.tileSize * 4)
+                
+                lzo_data.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Void in
+                    var len = lzo_uint(info.tileSize * info.tileSize * 4)
                     
-                    let image_data = Data(bytes: uint8Pointer, count: info.tileSize * info.tileSize * 4)
-                    
-                    let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
-                    let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-                    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
-                        .union(.byteOrder32Little)
-                    let providerRef: CGDataProvider? = CGDataProvider(data: image_data as CFData)
-
-                    let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: render)
-                    if cgimage != nil {
-                        let image = NSImage(cgImage: cgimage!, size: NSZeroSize)
-                        layer.chunks.append(image)
-                    }
+                    lzo1x_decompress_safe(bytes.baseAddress!.assumingMemoryBound(to: uint8.self), lzo_uint(lzo_data.count), uint8Pointer, &len, nil)
+                })
+                
+                let image_data = Data(bytes: uint8Pointer, count: info.tileSize * info.tileSize * 4)
+                
+                let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
+                let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+                let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+                    .union(.byteOrder32Little)
+                let providerRef: CGDataProvider? = CGDataProvider(data: image_data as CFData)
+                
+                let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: render)
+                if cgimage != nil {
+                    let image = NSImage(cgImage: cgimage!, size: NSZeroSize)
+                  
+                    layer.chunks[i] = image
                 }
             }
             
@@ -153,6 +168,8 @@ class Document: NSDocument {
     }
 
     override func read(from data: Data, ofType typeName: String) throws {
+        self.data = data
+        
         guard let archive = Archive(data: data, accessMode: Archive.AccessMode.read) else  {
             return
         }
