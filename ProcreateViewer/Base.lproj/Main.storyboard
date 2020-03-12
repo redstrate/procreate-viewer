@@ -246,10 +246,34 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ipM-NH-wUM">
-                                <rect key="frame" x="20" y="20" width="440" height="230"/>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipM-NH-wUM">
+                                <rect key="frame" x="20" y="20" width="440" height="201"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="chN-IE-x52"/>
                             </imageView>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ifc-N4-GCF">
+                                <rect key="frame" x="18" y="226" width="101" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="P5l-BO-Pd1">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" id="n0K-5D-di9"/>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="selectLayerAction:" target="5gI-5U-AMq" id="nzQ-6F-mUw"/>
+                                </connections>
+                            </popUpButton>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-dQ-JOJ">
+                                <rect key="frame" x="122" y="226" width="101" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="IVG-g2-g5C">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" id="H7D-h4-TRv"/>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="selectChunkAction:" target="5gI-5U-AMq" id="JPQ-dG-2AN"/>
+                                </connections>
+                            </popUpButton>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ipM-NH-wUM" secondAttribute="bottom" constant="20" symbolic="YES" id="9wh-iS-c9w"/>
@@ -259,7 +283,9 @@ DQ
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="chunkPopup" destination="vY4-dQ-JOJ" id="o1u-J8-bIL"/>
                         <outlet property="imageView" destination="ipM-NH-wUM" id="RT5-09-Hwj"/>
+                        <outlet property="layerPopup" destination="Ifc-N4-GCF" id="7hY-Va-SMT"/>
                         <segue destination="wda-Mt-beD" kind="sheet" identifier="showInfo" id="obo-Yt-yny"/>
                     </connections>
                 </viewController>

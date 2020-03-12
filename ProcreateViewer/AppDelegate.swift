@@ -8,9 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     
     func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         if(item.tag == 67) {
-            return NSApplication.shared.keyWindow
-                
-                != nil
+            return NSApplication.shared.keyWindow != nil
         }
         
         return true

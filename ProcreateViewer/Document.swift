@@ -3,11 +3,12 @@ import ZIPFoundation
 import CoreFoundation
 
 struct SilicaLayer {
-    
+    var chunks: [NSImage] = []
 }
 
 struct SilicaDocument {
     var trackedTime: Int = 0
+    var tileSize: Int = 0
     
     var layers: [SilicaLayer] = []
 }
@@ -23,6 +24,7 @@ class Document: NSDocument {
     let DocumentClassName = "SilicaDocument"
     let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
     let LayersKey = "layers"
+    let TileSizeKey = "tileSize"
     
     let LayerClassName = "SilicaLayer"
     
@@ -56,21 +58,65 @@ class Document: NSDocument {
         return nil
     }
     
-    func parseSilicaLayer(dict: NSDictionary) {
+    func parseSilicaLayer(archive: Archive, dict: NSDictionary) {
+        let objectsArray = self.dict?["$objects"] as! NSArray
+
         if getDocumentClassName(dict: dict) == LayerClassName {
-            let layer = SilicaLayer()
-            // TODO: fill in layer information
+            var layer = SilicaLayer()
+            
+            dump(dict, maxDepth: 2)
+            
+            let UUIDKey = dict["UUID"]
+            let UUIDClassID = objectRefGetValue(UUIDKey as CFTypeRef)
+            let UUIDClass = objectsArray[Int(UUIDClassID)] as! NSString
+                        
+            archive.forEach { (entry: Entry) in
+                if entry.path.contains(String(UUIDClass)) {                    
+                    var lzo_data = Data()
+                    
+                    do {
+                        try archive.extract(entry, consumer: { (d) in
+                            lzo_data.append(d)
+                        })
+                    } catch {
+                        Swift.print("Extracting entry from archive failed with error:\(error)")
+                    }
+                    
+                    let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: info.tileSize * info.tileSize * 4)
+                    
+                    lzo_data.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Void in
+                        var len = lzo_uint(info.tileSize * info.tileSize * 4)
+                        
+                        lzo1x_decompress_safe(bytes.baseAddress!.assumingMemoryBound(to: uint8.self), lzo_uint(lzo_data.count), uint8Pointer, &len, nil)
+                    })
+                    
+                    let image_data = Data(bytes: uint8Pointer, count: info.tileSize * info.tileSize * 4)
+                    
+                    let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
+                    let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+                    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+                        .union(.byteOrder32Little)
+                    let providerRef: CGDataProvider? = CGDataProvider(data: image_data as CFData)
+
+                    let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: render)
+                    if cgimage != nil {
+                        let image = NSImage(cgImage: cgimage!, size: NSZeroSize)
+                        layer.chunks.append(image)
+                    }
+                }
+            }
             
             info.layers.append(layer)
         }
     }
     
-    func parseSilicaDocument(dict: NSDictionary) {
+    func parseSilicaDocument(archive: Archive, dict: NSDictionary) {
         let objectsArray = self.dict?["$objects"] as! NSArray
 
         if getDocumentClassName(dict: dict) == DocumentClassName {
             info.trackedTime = (dict[TrackedTimeKey] as! NSNumber).intValue
-                        
+            info.tileSize = (dict[TileSizeKey] as! NSNumber).intValue
+            
             let layersClassKey = dict[LayersKey]
             let layersClassID = objectRefGetValue(layersClassKey as CFTypeRef)
             let layersClass = objectsArray[Int(layersClassID)] as! NSDictionary
@@ -81,12 +127,12 @@ class Document: NSDocument {
                 let layerClassID = objectRefGetValue(object as CFTypeRef)
                 let layerClass = objectsArray[Int(layerClassID)] as! NSDictionary
                                 
-                parseSilicaLayer(dict: layerClass)
+                parseSilicaLayer(archive: archive, dict: layerClass)
             }
         }
     }
     
-    func parseDocument(dict: NSDictionary) {
+    func parseDocument(archive: Archive, dict: NSDictionary) {
         // double check if this archive is really correct
         if let value = dict["$version"] {
             if (value as! Int) != 100000 {
@@ -102,7 +148,7 @@ class Document: NSDocument {
             let topClassID = objectRefGetValue(topObject["root"] as CFTypeRef)
             let topObjectClass = objectsArray[Int(topClassID)] as! NSDictionary
                         
-            parseSilicaDocument(dict: topObjectClass)
+            parseSilicaDocument(archive: archive, dict: topObjectClass)
         }
     }
 
@@ -153,7 +199,7 @@ class Document: NSDocument {
         
         let dict = (propertyList as! NSDictionary);
         
-        parseDocument(dict: dict)
+        parseDocument(archive: archive, dict: dict)
     }
 }
 

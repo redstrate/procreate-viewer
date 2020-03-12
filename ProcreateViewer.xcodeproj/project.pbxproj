@@ -25,6 +25,11 @@
 		036AFC1B241800850075400A /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 036AFC1A241800850075400A /* ZIPFoundation */; };
 		037B4042241821D200392452 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037B4041241821D200392452 /* InfoViewController.swift */; };
 		03CB382424191F620078B3E5 /* cbridge.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB382324191F620078B3E5 /* cbridge.c */; };
+		03CB38372419CA0C0078B3E5 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38332419CA0C0078B3E5 /* lzoconf.h */; };
+		03CB38382419CA0C0078B3E5 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38342419CA0C0078B3E5 /* lzodefs.h */; };
+		03CB38392419CA0C0078B3E5 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB38352419CA0C0078B3E5 /* minilzo.c */; };
+		03CB383A2419CA0C0078B3E5 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38362419CA0C0078B3E5 /* minilzo.h */; };
+		03CB383B2419CA2D0078B3E5 /* libLZO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CB382E2419C9DB0078B3E5 /* libLZO.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +46,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 036AFC0A241800350075400A;
 			remoteInfo = Thumbnail;
+		};
+		03CB383C2419CA2D0078B3E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 030F6FE62415C5E300A43F01 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03CB382D2419C9DB0078B3E5;
+			remoteInfo = LZO;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -82,6 +94,11 @@
 		037B4041241821D200392452 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		03CB382224191F610078B3E5 /* ProcreateViewer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProcreateViewer-Bridging-Header.h"; sourceTree = "<group>"; };
 		03CB382324191F620078B3E5 /* cbridge.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cbridge.c; sourceTree = "<group>"; };
+		03CB382E2419C9DB0078B3E5 /* libLZO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLZO.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		03CB38332419CA0C0078B3E5 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzoconf.h; path = "minilzo-2.10/lzoconf.h"; sourceTree = SOURCE_ROOT; };
+		03CB38342419CA0C0078B3E5 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzodefs.h; path = "minilzo-2.10/lzodefs.h"; sourceTree = SOURCE_ROOT; };
+		03CB38352419CA0C0078B3E5 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = minilzo.c; path = "minilzo-2.10/minilzo.c"; sourceTree = SOURCE_ROOT; };
+		03CB38362419CA0C0078B3E5 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = minilzo.h; path = "minilzo-2.10/minilzo.h"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				036AFBB8241687680075400A /* ZIPFoundation in Frameworks */,
+				03CB383B2419CA2D0078B3E5 /* libLZO.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,12 +130,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		03CB382C2419C9DB0078B3E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		030F6FE52415C5E300A43F01 = {
 			isa = PBXGroup;
 			children = (
+				03CB38322419C9F80078B3E5 /* LZO */,
 				030F6FF02415C5E300A43F01 /* ProcreateViewer */,
 				030F700C2415C6B500A43F01 /* Quicklook */,
 				036AFC0F241800350075400A /* Thumbnail */,
@@ -132,6 +158,7 @@
 				030F6FEE2415C5E300A43F01 /* Procreate Viewer.app */,
 				030F70082415C6B500A43F01 /* QuickLook.appex */,
 				036AFC0B241800350075400A /* Thumbnail.appex */,
+				03CB382E2419C9DB0078B3E5 /* libLZO.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,7 +210,31 @@
 			path = Thumbnail;
 			sourceTree = "<group>";
 		};
+		03CB38322419C9F80078B3E5 /* LZO */ = {
+			isa = PBXGroup;
+			children = (
+				03CB38332419CA0C0078B3E5 /* lzoconf.h */,
+				03CB38342419CA0C0078B3E5 /* lzodefs.h */,
+				03CB38352419CA0C0078B3E5 /* minilzo.c */,
+				03CB38362419CA0C0078B3E5 /* minilzo.h */,
+			);
+			path = LZO;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		03CB382A2419C9DB0078B3E5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03CB38382419CA0C0078B3E5 /* lzodefs.h in Headers */,
+				03CB38372419CA0C0078B3E5 /* lzoconf.h in Headers */,
+				03CB383A2419CA0C0078B3E5 /* minilzo.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		030F6FED2415C5E300A43F01 /* ProcreateViewer */ = {
@@ -200,6 +251,7 @@
 			dependencies = (
 				030F70152415C6B500A43F01 /* PBXTargetDependency */,
 				036AFC15241800350075400A /* PBXTargetDependency */,
+				03CB383D2419CA2D0078B3E5 /* PBXTargetDependency */,
 			);
 			name = ProcreateViewer;
 			packageProductDependencies = (
@@ -249,6 +301,23 @@
 			productReference = 036AFC0B241800350075400A /* Thumbnail.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		03CB382D2419C9DB0078B3E5 /* LZO */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03CB382F2419C9DB0078B3E5 /* Build configuration list for PBXNativeTarget "LZO" */;
+			buildPhases = (
+				03CB382A2419C9DB0078B3E5 /* Headers */,
+				03CB382B2419C9DB0078B3E5 /* Sources */,
+				03CB382C2419C9DB0078B3E5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LZO;
+			productName = LZO;
+			productReference = 03CB382E2419C9DB0078B3E5 /* libLZO.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -267,6 +336,9 @@
 						CreatedOnToolsVersion = 11.3.1;
 					};
 					036AFC0A241800350075400A = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					03CB382D2419C9DB0078B3E5 = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
 				};
@@ -290,6 +362,7 @@
 				030F6FED2415C5E300A43F01 /* ProcreateViewer */,
 				030F70072415C6B500A43F01 /* QuickLook */,
 				036AFC0A241800350075400A /* Thumbnail */,
+				03CB382D2419C9DB0078B3E5 /* LZO */,
 			);
 		};
 /* End PBXProject section */
@@ -350,6 +423,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		03CB382B2419C9DB0078B3E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03CB38392419CA0C0078B3E5 /* minilzo.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -362,6 +443,11 @@
 			isa = PBXTargetDependency;
 			target = 036AFC0A241800350075400A /* Thumbnail */;
 			targetProxy = 036AFC14241800350075400A /* PBXContainerItemProxy */;
+		};
+		03CB383D2419CA2D0078B3E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03CB382D2419C9DB0078B3E5 /* LZO */;
+			targetProxy = 03CB383C2419CA2D0078B3E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -621,6 +707,28 @@
 			};
 			name = Release;
 		};
+		03CB38302419C9DB0078B3E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JM5LKVKH48;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		03CB38312419C9DB0078B3E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JM5LKVKH48;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -656,6 +764,15 @@
 			buildConfigurations = (
 				036AFC18241800350075400A /* Debug */,
 				036AFC19241800350075400A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03CB382F2419C9DB0078B3E5 /* Build configuration list for PBXNativeTarget "LZO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03CB38302419C9DB0078B3E5 /* Debug */,
+				03CB38312419C9DB0078B3E5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
