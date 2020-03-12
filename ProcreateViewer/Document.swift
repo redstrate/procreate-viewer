@@ -3,15 +3,9 @@ import ZIPFoundation
 import CoreFoundation
 
 struct SilicaChunk {
-    init() {
-        x = 0
-        y = 0
-        image = NSImage()
-    }
-    
-    var x: Int
-    var y: Int
-    var image: NSImage
+    var x: Int = 0
+    var y: Int = 0
+    var image: NSImage = NSImage()
 }
 
 struct SilicaLayer {
@@ -38,6 +32,11 @@ class Document: NSDocument {
     
     var dict: NSDictionary?
     
+    let NSKeyedArchiveVersion = 100000
+    
+    let ThumbnailPath = "QuickLook/Thumbnail.png"
+    let DocumentArchivePath = "Document.archive"
+    
     let DocumentClassName = "SilicaDocument"
     let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
     let LayersKey = "layers"
@@ -47,9 +46,13 @@ class Document: NSDocument {
     let LayerClassName = "SilicaLayer"
     
     var info = SilicaDocument()
+        
+    var rows: Int = 0
+    var columns: Int = 0
     
-    var thumbnail: NSImage? = nil
-
+    var remainderWidth: Int = 0
+    var remainderHeight: Int = 0
+    
     override init() {
         super.init()
     }
@@ -76,6 +79,64 @@ class Document: NSDocument {
         return nil
     }
     
+    /*
+     Returns the correct tile size, taking into account the remainder between tile size and image size.
+     */
+    func getTileSize(x: Int, y: Int) -> (Int, Int) {
+        var width: Int = info.tileSize
+        var height: Int = info.tileSize
+        
+        if((x + 1) == columns) {
+            width = info.tileSize - remainderWidth
+        }
+        
+        if(y == rows) {
+            height = info.tileSize - remainderHeight
+        }
+        
+        return (width, height)
+    }
+    
+    /*
+     Converts a CFKeyedArchiveUID from a NSKeyedArchive to a Int for indexing an array or dictionary.
+     */
+    func getClassID(id: Any?) -> Int {
+        return Int(objectRefGetValue(id! as CFTypeRef))
+    }
+    
+    /*
+     Parses the chunk filename, ex. 1~1 to integer coordinates.
+     */
+    func parseChunkFilename(filename: String) -> (Int, Int)? {
+        let pathURL = URL(fileURLWithPath: filename)
+        let pathComponents = pathURL.lastPathComponent.replacingOccurrences(of: ".chunk", with: "").components(separatedBy: "~")
+        
+        let x = Int(pathComponents[0])
+        let y = Int(pathComponents[1])
+        
+        if x != nil && y != nil {
+            return (x!, y!)
+        } else {
+            return nil
+        }
+    }
+
+    func readData(archive: Archive, entry: Entry) -> Data? {
+        var data = Data()
+        
+        do {
+            let _ = try archive.extract(entry, consumer: { (d) in
+                data.append(d)
+            })
+        } catch {
+            Swift.print("Extracting entry from archive failed with error:\(error)")
+            
+            return nil
+        }
+        
+        return data
+    }
+
     func parseSilicaLayer(archive: Archive, dict: NSDictionary) {
         let objectsArray = self.dict?["$objects"] as! NSArray
 
@@ -83,69 +144,75 @@ class Document: NSDocument {
             var layer = SilicaLayer()
                         
             let UUIDKey = dict["UUID"]
-            let UUIDClassID = objectRefGetValue(UUIDKey as CFTypeRef)
-            let UUIDClass = objectsArray[Int(UUIDClassID)] as! NSString
+            let UUIDClassID = getClassID(id: UUIDKey)
+            let UUIDClass = objectsArray[UUIDClassID] as! NSString
             
-            var chunkPaths: [Entry] = []
+            var chunkPaths: [String] = []
             
             archive.forEach { (entry: Entry) in
                 if entry.path.contains(String(UUIDClass)) {
-                    chunkPaths.append(entry)
+                    chunkPaths.append(entry.path)
                 }
             }
             
             layer.chunks = Array(repeating: SilicaChunk(), count: chunkPaths.count)
             
+            let dispatchGroup = DispatchGroup()
+            let queue = DispatchQueue(label: "imageWork")
+            
             DispatchQueue.concurrentPerform(iterations: chunkPaths.count) { (i: Int) in
-                let entry = chunkPaths[i]
+                dispatchGroup.enter()
+
+                var threadArchive: Archive?
+                var threadEntry: Entry?
                 
-                let pathURL = URL(fileURLWithPath: entry.path)
-                let pathComponents = pathURL.lastPathComponent.replacingOccurrences(of: ".chunk", with: "").components(separatedBy: "~")
-                
-                let x = Int(pathComponents[0])
-                let y = Int(pathComponents[1])
-                
-                layer.chunks[i].x = x!
-                layer.chunks[i].y = y!
-                
-                guard let archive = Archive(data: self.data!, accessMode: Archive.AccessMode.read) else  {
+                queue.sync {
+                    threadArchive = Archive(data: self.data!, accessMode: Archive.AccessMode.read)
+                    threadEntry = threadArchive?[chunkPaths[i]]
+                }
+        
+                guard let (x, y) = parseChunkFilename(filename: threadEntry!.path) else {
                     return
                 }
                 
-                var lzo_data = Data()
+                let (width, height) = getTileSize(x: x, y: y)
+                let byteSize = width * height * 4
                 
-                do {
-                    try archive.extract(entry, consumer: { (d) in
-                        lzo_data.append(d)
-                    })
-                } catch {
-                    Swift.print("Extracting entry from archive failed with error:\(error)")
+                let uncompressedMemory = UnsafeMutablePointer<UInt8>.allocate(capacity: byteSize)
+
+                guard let lzoData = readData(archive: threadArchive!, entry: threadEntry!) else {
+                    return
                 }
                 
-                let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: info.tileSize * info.tileSize * 4)
-                
-                lzo_data.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Void in
-                    var len = lzo_uint(info.tileSize * info.tileSize * 4)
+                lzoData.withUnsafeBytes({ (bytes: UnsafeRawBufferPointer) -> Void in
+                    var len = lzo_uint(byteSize)
                     
-                    lzo1x_decompress_safe(bytes.baseAddress!.assumingMemoryBound(to: uint8.self), lzo_uint(lzo_data.count), uint8Pointer, &len, nil)
+                    lzo1x_decompress_safe(bytes.baseAddress!.assumingMemoryBound(to: uint8.self), lzo_uint(lzoData.count), uncompressedMemory, &len, nil)
                 })
                 
-                let image_data = Data(bytes: uint8Pointer, count: info.tileSize * info.tileSize * 4)
+                let imageData = Data(bytes: uncompressedMemory, count: byteSize)
                 
                 let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
                 let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-                let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)
-                    .union(.byteOrder32Big)
-                let providerRef: CGDataProvider? = CGDataProvider(data: image_data as CFData)
+                let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue).union(.byteOrder32Big)
+                let providerRef: CGDataProvider? = CGDataProvider(data: imageData as CFData)
                 
-                let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: false, intent: render)
+                guard let cgimage = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: width * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: false, intent: render) else {
+                    return
+                }
                 
-                if cgimage != nil {
-                    let image = NSImage(cgImage: cgimage!, size: NSZeroSize)
-                  
+                let image = NSImage(cgImage: cgimage, size: NSZeroSize)
+                
+                queue.async(flags: .barrier) {
                     layer.chunks[i].image = image
+                    layer.chunks[i].x = x
+                    layer.chunks[i].y = y
+                    
+                    dispatchGroup.leave()
                 }
             }
+            
+            dispatchGroup.wait()
             
             info.layers.append(layer)
         }
@@ -159,8 +226,8 @@ class Document: NSDocument {
             info.tileSize = (dict[TileSizeKey] as! NSNumber).intValue
             
             let sizeClassKey = dict[SizeKey]
-            let sizeClassID = objectRefGetValue(sizeClassKey as CFTypeRef)
-            let sizeString = objectsArray[Int(sizeClassID)] as! String
+            let sizeClassID = getClassID(id: sizeClassKey)
+            let sizeString = objectsArray[sizeClassID] as! String
     
             let sizeComponents = sizeString.replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "").components(separatedBy: ", ")
             let width = Int(sizeComponents[0])
@@ -169,15 +236,26 @@ class Document: NSDocument {
             info.width = width!
             info.height = height!
             
+            columns = Int(ceil(Float(info.width) / Float(info.tileSize)))
+            rows = Int(ceil(Float(info.height) / Float(info.tileSize)))
+
+            if info.width % info.tileSize != 0 {
+                remainderWidth = (columns * info.tileSize) - info.width
+            }
+            
+            if info.height % info.tileSize != 0 {
+                remainderHeight = (rows * info.tileSize) - info.height
+            }
+            
             let layersClassKey = dict[LayersKey]
-            let layersClassID = objectRefGetValue(layersClassKey as CFTypeRef)
-            let layersClass = objectsArray[Int(layersClassID)] as! NSDictionary
+            let layersClassID = getClassID(id: layersClassKey)
+            let layersClass = objectsArray[layersClassID] as! NSDictionary
                         
             let array = layersClass["NS.objects"] as! NSArray
             
             for object in array {
-                let layerClassID = objectRefGetValue(object as CFTypeRef)
-                let layerClass = objectsArray[Int(layerClassID)] as! NSDictionary
+                let layerClassID = getClassID(id: object)
+                let layerClass = objectsArray[layerClassID] as! NSDictionary
                                 
                 parseSilicaLayer(archive: archive, dict: layerClass)
             }
@@ -187,8 +265,9 @@ class Document: NSDocument {
     func parseDocument(archive: Archive, dict: NSDictionary) {
         // double check if this archive is really correct
         if let value = dict["$version"] {
-            if (value as! Int) != 100000 {
+            if (value as! Int) != NSKeyedArchiveVersion {
                 Swift.print("This is not a valid document!")
+                return
             }
             
             self.dict = dict
@@ -210,68 +289,42 @@ class Document: NSDocument {
         guard let archive = Archive(data: data, accessMode: Archive.AccessMode.read) else  {
             return
         }
-        
-        // load thumbnail
-        guard let entry = archive["QuickLook/Thumbnail.png"] else {
-            return
-        }
-        
-        var top_data = Data()
-        
-        do {
-            try archive.extract(entry, consumer: { (d) in
-                top_data.append(d)
-            })
-        } catch {
-            Swift.print("Extracting entry from archive failed with error:\(error)")
-        }
-        
-        thumbnail = NSImage(data: top_data)
     
-        // load doc info
-        guard let document_entry = archive["Document.archive"] else {
+        guard let documentEntry = archive[DocumentArchivePath] else {
             return
         }
         
-        var doc_data = Data()
-        
-        do {
-            try archive.extract(document_entry, consumer: { (d) in
-                doc_data.append(d)
-            })
-        } catch {
-            Swift.print("Extracting entry from archive failed with error:\(error)")
+        guard let documentData = readData(archive: archive, entry: documentEntry) else {
+            return
         }
         
-        // Document.archive is a binary plist (specifically a NSKeyedArchive), luckily swift has a built-in solution to decode it
         var plistFormat = PropertyListSerialization.PropertyListFormat.binary
-        let plistBinary = doc_data
-        
-        guard let propertyList = try? PropertyListSerialization.propertyList(from: plistBinary, options: [], format: &plistFormat) else {
-            fatalError("failed to deserialize")
+        guard let propertyList = try? PropertyListSerialization.propertyList(from: documentData, options: [], format: &plistFormat) else {
+            return
         }
-        
-        let dict = (propertyList as! NSDictionary);
-        
-        parseDocument(archive: archive, dict: dict)
+                
+        parseDocument(archive: archive, dict: propertyList as! NSDictionary)
     }
     
     func makeComposite() -> NSImage {
         let image = NSImage(size: NSSize(width: info.width, height: info.height))
         image.lockFocus()
         
-        let rows = Int(ceil(Float(info.height) / Float(info.tileSize)))
+        let color = NSColor.white
+        color.drawSwatch(in: NSRect(origin: .zero, size: image.size))
         
         for layer in info.layers.reversed() {
             for chunk in layer.chunks {
                 let x = chunk.x
                 var y = chunk.y
                 
+                let (width, height) = getTileSize(x: x, y: y)
+                
                 if y == rows {
                     y = 0
                 }
             
-                let rect = NSRect(x: info.tileSize * x, y: info.height - (info.tileSize * y), width: info.tileSize, height: info.tileSize)
+                let rect = NSRect(x: info.tileSize * x, y: info.height - (info.tileSize * y), width: width, height: height)
                 
                 chunk.image.draw(in: rect)
             }

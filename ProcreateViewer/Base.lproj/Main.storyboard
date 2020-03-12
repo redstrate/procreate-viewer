@@ -198,14 +198,14 @@ DQ
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="2oe-to-Rcz" firstAttribute="top" secondItem="8HM-na-o1E" secondAttribute="bottom" constant="8" symbolic="YES" id="85g-Dp-ezi"/>
                             <constraint firstItem="8HM-na-o1E" firstAttribute="top" secondItem="u9u-el-oA4" secondAttribute="bottom" constant="8" symbolic="YES" id="CA1-bq-4Dc"/>
                             <constraint firstItem="u9u-el-oA4" firstAttribute="trailing" secondItem="8HM-na-o1E" secondAttribute="trailing" id="ILX-8S-pOI"/>
                             <constraint firstItem="u9u-el-oA4" firstAttribute="top" secondItem="3vu-Kd-l73" secondAttribute="top" constant="20" symbolic="YES" id="IQj-on-T5L"/>
                             <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="8HM-na-o1E" secondAttribute="leading" id="KJd-X5-kxh"/>
                             <constraint firstAttribute="trailing" secondItem="u9u-el-oA4" secondAttribute="trailing" constant="20" symbolic="YES" id="PlA-zS-FpK"/>
-                            <constraint firstItem="2oe-to-Rcz" firstAttribute="trailing" secondItem="8HM-na-o1E" secondAttribute="trailing" id="Whu-Lh-znF"/>
                             <constraint firstItem="u9u-el-oA4" firstAttribute="leading" secondItem="3vu-Kd-l73" secondAttribute="leading" constant="20" symbolic="YES" id="Xzy-ZR-1ha"/>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="top" secondItem="8HM-na-o1E" secondAttribute="bottom" constant="8" symbolic="YES" id="ZQM-5m-wzY"/>
+                            <constraint firstItem="2oe-to-Rcz" firstAttribute="trailing" secondItem="8HM-na-o1E" secondAttribute="trailing" id="oGX-cy-Uhv"/>
                         </constraints>
                     </view>
                     <connections>
@@ -247,49 +247,14 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipM-NH-wUM">
-                                <rect key="frame" x="20" y="20" width="440" height="201"/>
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="chN-IE-x52"/>
                             </imageView>
-                            <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ifc-N4-GCF">
-                                <rect key="frame" x="18" y="226" width="101" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="96" id="Csg-An-ug2"/>
-                                </constraints>
-                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="P5l-BO-Pd1">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                    <menu key="menu" id="n0K-5D-di9"/>
-                                </popUpButtonCell>
-                                <connections>
-                                    <action selector="selectLayerAction:" target="5gI-5U-AMq" id="nzQ-6F-mUw"/>
-                                </connections>
-                            </popUpButton>
-                            <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-dQ-JOJ">
-                                <rect key="frame" x="122" y="226" width="101" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="96" id="FeE-01-aTL"/>
-                                </constraints>
-                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="IVG-g2-g5C">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                    <menu key="menu" id="H7D-h4-TRv"/>
-                                </popUpButtonCell>
-                                <connections>
-                                    <action selector="selectChunkAction:" target="5gI-5U-AMq" id="JPQ-dG-2AN"/>
-                                </connections>
-                            </popUpButton>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="Ifc-N4-GCF" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="20" symbolic="YES" id="BmT-9r-weG"/>
-                            <constraint firstItem="vY4-dQ-JOJ" firstAttribute="leading" secondItem="Ifc-N4-GCF" secondAttribute="trailing" constant="8" symbolic="YES" id="hgm-Np-cYB"/>
-                            <constraint firstItem="vY4-dQ-JOJ" firstAttribute="baseline" secondItem="Ifc-N4-GCF" secondAttribute="baseline" id="uHT-fd-ze3"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="chunkPopup" destination="vY4-dQ-JOJ" id="o1u-J8-bIL"/>
                         <outlet property="imageView" destination="ipM-NH-wUM" id="RT5-09-Hwj"/>
-                        <outlet property="layerPopup" destination="Ifc-N4-GCF" id="7hY-Va-SMT"/>
                         <segue destination="wda-Mt-beD" kind="sheet" identifier="showInfo" id="obo-Yt-yny"/>
                     </connections>
                 </viewController>
