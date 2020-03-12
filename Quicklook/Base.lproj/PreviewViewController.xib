@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="PRoQuicklook" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="QuickLook" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="EP0-7I-mXS" id="iNc-ix-LJi"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
@@ -17,17 +17,12 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EP0-7I-mXS">
-                    <rect key="frame" x="20" y="20" width="440" height="232"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="GAh-NG-dcL"/>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EP0-7I-mXS">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="GAh-NG-dcL"/>
                 </imageView>
             </subviews>
-            <constraints>
-                <constraint firstItem="EP0-7I-mXS" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="BJO-3N-O8t"/>
-                <constraint firstAttribute="trailing" secondItem="EP0-7I-mXS" secondAttribute="trailing" constant="20" id="HuZ-FY-I9T"/>
-                <constraint firstAttribute="bottom" secondItem="EP0-7I-mXS" secondAttribute="bottom" constant="20" id="u2E-5g-XFi"/>
-                <constraint firstItem="EP0-7I-mXS" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="zWW-ah-XqT"/>
-            </constraints>
             <point key="canvasLocation" x="139" y="154"/>
         </customView>
     </objects>

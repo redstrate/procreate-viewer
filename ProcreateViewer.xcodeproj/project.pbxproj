@@ -30,6 +30,9 @@
 		03CB38392419CA0C0078B3E5 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB38352419CA0C0078B3E5 /* minilzo.c */; };
 		03CB383A2419CA0C0078B3E5 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38362419CA0C0078B3E5 /* minilzo.h */; };
 		03CB383B2419CA2D0078B3E5 /* libLZO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CB382E2419C9DB0078B3E5 /* libLZO.a */; };
+		03CB3840241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
+		03CB3841241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
+		03CB3842241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,7 @@
 		03CB38342419CA0C0078B3E5 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzodefs.h; path = "minilzo-2.10/lzodefs.h"; sourceTree = SOURCE_ROOT; };
 		03CB38352419CA0C0078B3E5 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = minilzo.c; path = "minilzo-2.10/minilzo.c"; sourceTree = SOURCE_ROOT; };
 		03CB38362419CA0C0078B3E5 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = minilzo.h; path = "minilzo-2.10/minilzo.h"; sourceTree = SOURCE_ROOT; };
+		03CB383F241A5AED0078B3E5 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +147,7 @@
 		030F6FE52415C5E300A43F01 = {
 			isa = PBXGroup;
 			children = (
+				03CB383E241A5ACD0078B3E5 /* Shared */,
 				03CB38322419C9F80078B3E5 /* LZO */,
 				030F6FF02415C5E300A43F01 /* ProcreateViewer */,
 				030F700C2415C6B500A43F01 /* Quicklook */,
@@ -219,6 +224,14 @@
 				03CB38362419CA0C0078B3E5 /* minilzo.h */,
 			);
 			path = LZO;
+			sourceTree = "<group>";
+		};
+		03CB383E241A5ACD0078B3E5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				03CB383F241A5AED0078B3E5 /* Shared.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,6 +412,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03CB3840241A5AED0078B3E5 /* Shared.swift in Sources */,
 				036AFBBA24168C030075400A /* ViewController.swift in Sources */,
 				03CB382424191F620078B3E5 /* cbridge.c in Sources */,
 				030F6FF42415C5E300A43F01 /* Document.swift in Sources */,
@@ -411,6 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03CB3841241A5AED0078B3E5 /* Shared.swift in Sources */,
 				030F700E2415C6B500A43F01 /* PreviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03CB3842241A5AED0078B3E5 /* Shared.swift in Sources */,
 				036AFC11241800350075400A /* ThumbnailProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

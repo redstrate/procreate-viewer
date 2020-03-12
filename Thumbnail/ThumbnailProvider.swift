@@ -9,16 +9,19 @@ class ThumbnailProvider: QLThumbnailProvider {
         fc.coordinate(with: [intent], queue: .main) { (err) in
             if err == nil {
                 do {
-                    let archive = Archive(data: try Data(contentsOf: intent.url), accessMode: Archive.AccessMode.read)
+                    guard let archive = Archive(data: try Data(contentsOf: intent.url), accessMode: Archive.AccessMode.read) else {
+                        return
+                    }
                     
-                    let entry = archive?["QuickLook/Thumbnail.png"]
-                    var top_data = Data()
+                    guard let entry = archive[ThumbnailPath] else {
+                        return
+                    }
                     
-                    try archive?.extract(entry!, consumer: { (d) in
-                        top_data.append(d)
-                    })
+                    guard let thumbnailData = readData(archive: archive, entry: entry) else {
+                        return
+                    }
                     
-                    let image = NSImage(data: top_data)
+                    let image = NSImage(data: thumbnailData)
                     
                     let maximumSize = request.maximumSize
                     let imageSize = image?.size
@@ -48,6 +51,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                             return false
                         }
                     }
+                    
                     handler(reply, nil)
                 } catch {
                     NSLog("Could not load file \(intent.url.lastPathComponent) to preview it")
