@@ -25,14 +25,14 @@
 		036AFC1B241800850075400A /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 036AFC1A241800850075400A /* ZIPFoundation */; };
 		037B4042241821D200392452 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037B4041241821D200392452 /* InfoViewController.swift */; };
 		03CB382424191F620078B3E5 /* cbridge.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB382324191F620078B3E5 /* cbridge.c */; };
-		03CB38372419CA0C0078B3E5 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38332419CA0C0078B3E5 /* lzoconf.h */; };
-		03CB38382419CA0C0078B3E5 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38342419CA0C0078B3E5 /* lzodefs.h */; };
-		03CB38392419CA0C0078B3E5 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB38352419CA0C0078B3E5 /* minilzo.c */; };
-		03CB383A2419CA0C0078B3E5 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB38362419CA0C0078B3E5 /* minilzo.h */; };
 		03CB383B2419CA2D0078B3E5 /* libLZO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CB382E2419C9DB0078B3E5 /* libLZO.a */; };
 		03CB3840241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
 		03CB3841241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
 		03CB3842241A5AED0078B3E5 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB383F241A5AED0078B3E5 /* Shared.swift */; };
+		03CB3847241A5D600078B3E5 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB3843241A5D600078B3E5 /* minilzo.h */; };
+		03CB3848241A5D600078B3E5 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB3844241A5D600078B3E5 /* lzodefs.h */; };
+		03CB3849241A5D600078B3E5 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 03CB3845241A5D600078B3E5 /* minilzo.c */; };
+		03CB384A241A5D600078B3E5 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CB3846241A5D600078B3E5 /* lzoconf.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,11 +98,11 @@
 		03CB382224191F610078B3E5 /* ProcreateViewer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProcreateViewer-Bridging-Header.h"; sourceTree = "<group>"; };
 		03CB382324191F620078B3E5 /* cbridge.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cbridge.c; sourceTree = "<group>"; };
 		03CB382E2419C9DB0078B3E5 /* libLZO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLZO.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		03CB38332419CA0C0078B3E5 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzoconf.h; path = "minilzo-2.10/lzoconf.h"; sourceTree = SOURCE_ROOT; };
-		03CB38342419CA0C0078B3E5 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzodefs.h; path = "minilzo-2.10/lzodefs.h"; sourceTree = SOURCE_ROOT; };
-		03CB38352419CA0C0078B3E5 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = minilzo.c; path = "minilzo-2.10/minilzo.c"; sourceTree = SOURCE_ROOT; };
-		03CB38362419CA0C0078B3E5 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = minilzo.h; path = "minilzo-2.10/minilzo.h"; sourceTree = SOURCE_ROOT; };
 		03CB383F241A5AED0078B3E5 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		03CB3843241A5D600078B3E5 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = minilzo.h; path = "Dependencies/minilzo-2.10/minilzo.h"; sourceTree = SOURCE_ROOT; };
+		03CB3844241A5D600078B3E5 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzodefs.h; path = "Dependencies/minilzo-2.10/lzodefs.h"; sourceTree = SOURCE_ROOT; };
+		03CB3845241A5D600078B3E5 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = minilzo.c; path = "Dependencies/minilzo-2.10/minilzo.c"; sourceTree = SOURCE_ROOT; };
+		03CB3846241A5D600078B3E5 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzoconf.h; path = "Dependencies/minilzo-2.10/lzoconf.h"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,10 +218,10 @@
 		03CB38322419C9F80078B3E5 /* LZO */ = {
 			isa = PBXGroup;
 			children = (
-				03CB38332419CA0C0078B3E5 /* lzoconf.h */,
-				03CB38342419CA0C0078B3E5 /* lzodefs.h */,
-				03CB38352419CA0C0078B3E5 /* minilzo.c */,
-				03CB38362419CA0C0078B3E5 /* minilzo.h */,
+				03CB3846241A5D600078B3E5 /* lzoconf.h */,
+				03CB3844241A5D600078B3E5 /* lzodefs.h */,
+				03CB3845241A5D600078B3E5 /* minilzo.c */,
+				03CB3843241A5D600078B3E5 /* minilzo.h */,
 			);
 			path = LZO;
 			sourceTree = "<group>";
@@ -241,9 +241,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03CB38382419CA0C0078B3E5 /* lzodefs.h in Headers */,
-				03CB38372419CA0C0078B3E5 /* lzoconf.h in Headers */,
-				03CB383A2419CA0C0078B3E5 /* minilzo.h in Headers */,
+				03CB3848241A5D600078B3E5 /* lzodefs.h in Headers */,
+				03CB384A241A5D600078B3E5 /* lzoconf.h in Headers */,
+				03CB3847241A5D600078B3E5 /* minilzo.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03CB38392419CA0C0078B3E5 /* minilzo.c in Sources */,
+				03CB3849241A5D600078B3E5 /* minilzo.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
