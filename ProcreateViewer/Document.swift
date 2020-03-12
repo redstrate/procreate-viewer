@@ -2,13 +2,28 @@ import Cocoa
 import ZIPFoundation
 import CoreFoundation
 
+struct SilicaChunk {
+    init() {
+        x = 0
+        y = 0
+        image = NSImage()
+    }
+    
+    var x: Int
+    var y: Int
+    var image: NSImage
+}
+
 struct SilicaLayer {
-    var chunks: [NSImage] = []
+    var chunks: [SilicaChunk] = []
 }
 
 struct SilicaDocument {
     var trackedTime: Int = 0
     var tileSize: Int = 0
+    
+    var width: Int = 0
+    var height: Int = 0
     
     var layers: [SilicaLayer] = []
 }
@@ -27,6 +42,7 @@ class Document: NSDocument {
     let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
     let LayersKey = "layers"
     let TileSizeKey = "tileSize"
+    let SizeKey = "size"
     
     let LayerClassName = "SilicaLayer"
     
@@ -78,10 +94,19 @@ class Document: NSDocument {
                 }
             }
             
-            layer.chunks = Array(repeating: NSImage(), count: chunkPaths.count)
+            layer.chunks = Array(repeating: SilicaChunk(), count: chunkPaths.count)
             
             DispatchQueue.concurrentPerform(iterations: chunkPaths.count) { (i: Int) in
                 let entry = chunkPaths[i]
+                
+                let pathURL = URL(fileURLWithPath: entry.path)
+                let pathComponents = pathURL.lastPathComponent.replacingOccurrences(of: ".chunk", with: "").components(separatedBy: "~")
+                
+                let x = Int(pathComponents[0])
+                let y = Int(pathComponents[1])
+                
+                layer.chunks[i].x = x!
+                layer.chunks[i].y = y!
                 
                 guard let archive = Archive(data: self.data!, accessMode: Archive.AccessMode.read) else  {
                     return
@@ -109,15 +134,16 @@ class Document: NSDocument {
                 
                 let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
                 let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-                let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
-                    .union(.byteOrder32Little)
+                let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)
+                    .union(.byteOrder32Big)
                 let providerRef: CGDataProvider? = CGDataProvider(data: image_data as CFData)
                 
-                let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: render)
+                let cgimage: CGImage? = CGImage(width: info.tileSize, height: info.tileSize, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: info.tileSize * 4, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: false, intent: render)
+                
                 if cgimage != nil {
                     let image = NSImage(cgImage: cgimage!, size: NSZeroSize)
                   
-                    layer.chunks[i] = image
+                    layer.chunks[i].image = image
                 }
             }
             
@@ -131,6 +157,17 @@ class Document: NSDocument {
         if getDocumentClassName(dict: dict) == DocumentClassName {
             info.trackedTime = (dict[TrackedTimeKey] as! NSNumber).intValue
             info.tileSize = (dict[TileSizeKey] as! NSNumber).intValue
+            
+            let sizeClassKey = dict[SizeKey]
+            let sizeClassID = objectRefGetValue(sizeClassKey as CFTypeRef)
+            let sizeString = objectsArray[Int(sizeClassID)] as! String
+    
+            let sizeComponents = sizeString.replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "").components(separatedBy: ", ")
+            let width = Int(sizeComponents[0])
+            let height = Int(sizeComponents[1])
+            
+            info.width = width!
+            info.height = height!
             
             let layersClassKey = dict[LayersKey]
             let layersClassID = objectRefGetValue(layersClassKey as CFTypeRef)
@@ -217,6 +254,31 @@ class Document: NSDocument {
         let dict = (propertyList as! NSDictionary);
         
         parseDocument(archive: archive, dict: dict)
+    }
+    
+    func makeComposite() -> NSImage {
+        let image = NSImage(size: NSSize(width: info.width, height: info.height))
+        image.lockFocus()
+        
+        let rows = Int(ceil(Float(info.height) / Float(info.tileSize)))
+        
+        for layer in info.layers.reversed() {
+            for chunk in layer.chunks {
+                let x = chunk.x
+                var y = chunk.y
+                
+                if y == rows {
+                    y = 0
+                }
+            
+                let rect = NSRect(x: info.tileSize * x, y: info.height - (info.tileSize * y), width: info.tileSize, height: info.tileSize)
+                
+                chunk.image.draw(in: rect)
+            }
+        }
+        
+        image.unlockFocus()
+        return image
     }
 }
 

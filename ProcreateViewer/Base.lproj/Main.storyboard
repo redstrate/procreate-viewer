@@ -246,13 +246,16 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipM-NH-wUM">
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipM-NH-wUM">
                                 <rect key="frame" x="20" y="20" width="440" height="201"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="chN-IE-x52"/>
                             </imageView>
-                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ifc-N4-GCF">
+                            <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ifc-N4-GCF">
                                 <rect key="frame" x="18" y="226" width="101" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="Csg-An-ug2"/>
+                                </constraints>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="P5l-BO-Pd1">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -262,9 +265,11 @@ DQ
                                     <action selector="selectLayerAction:" target="5gI-5U-AMq" id="nzQ-6F-mUw"/>
                                 </connections>
                             </popUpButton>
-                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-dQ-JOJ">
+                            <popUpButton verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-dQ-JOJ">
                                 <rect key="frame" x="122" y="226" width="101" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="FeE-01-aTL"/>
+                                </constraints>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="IVG-g2-g5C">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -276,10 +281,9 @@ DQ
                             </popUpButton>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="ipM-NH-wUM" secondAttribute="bottom" constant="20" symbolic="YES" id="9wh-iS-c9w"/>
-                            <constraint firstAttribute="trailing" secondItem="ipM-NH-wUM" secondAttribute="trailing" constant="20" symbolic="YES" id="H7s-2P-Zaq"/>
-                            <constraint firstItem="ipM-NH-wUM" firstAttribute="leading" secondItem="ERx-hH-rdd" secondAttribute="leading" constant="20" symbolic="YES" id="aib-B6-dBu"/>
-                            <constraint firstItem="ipM-NH-wUM" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="20" symbolic="YES" id="xk9-1v-JRt"/>
+                            <constraint firstItem="Ifc-N4-GCF" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="20" symbolic="YES" id="BmT-9r-weG"/>
+                            <constraint firstItem="vY4-dQ-JOJ" firstAttribute="leading" secondItem="Ifc-N4-GCF" secondAttribute="trailing" constant="8" symbolic="YES" id="hgm-Np-cYB"/>
+                            <constraint firstItem="vY4-dQ-JOJ" firstAttribute="baseline" secondItem="Ifc-N4-GCF" secondAttribute="baseline" id="uHT-fd-ze3"/>
                         </constraints>
                     </view>
                     <connections>

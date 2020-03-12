@@ -21,7 +21,7 @@ class ViewController: NSViewController {
     func loadCanvas() {
         let document = self.view.window?.windowController?.document as? Document
 
-        imageView.image = document?.info.layers[selectedLayer].chunks[selectedChunk]
+        imageView.image = document?.info.layers[selectedLayer].chunks[selectedChunk].image
     }
     
     @IBAction func selectLayerAction(_ sender: Any) {
@@ -45,14 +45,14 @@ class ViewController: NSViewController {
         chunkPopup.removeAllItems()
         
         for (i, chunk) in (document?.info.layers[selectedLayer].chunks.enumerated())! {
-            chunkPopup.addItem(withTitle: "Chunk " + String(i))
+            chunkPopup.addItem(withTitle: "Chunk " + String(chunk.x) + " " + String(chunk.y))
         }
     }
     
     override func viewWillAppear() {
         let document = self.view.window?.windowController?.document as? Document
         
-        imageView.image = document?.thumbnail
+        imageView.image = document?.makeComposite()
         
         for (i, layer) in (document?.info.layers.enumerated())! {
             layerPopup.addItem(withTitle: "Layer " + String(i))
