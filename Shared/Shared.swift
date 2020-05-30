@@ -11,6 +11,9 @@ let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
 let LayersKey = "layers"
 let TileSizeKey = "tileSize"
 let SizeKey = "size"
+let OrientationKey = "orientation"
+let FlippedHorizontallyKey = "flippedHorizontally"
+let FlippedVerticallyKey = "flippedVertically"
 
 let LayerClassName = "SilicaLayer"
 

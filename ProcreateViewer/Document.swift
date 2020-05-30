@@ -15,6 +15,9 @@ struct SilicaLayer {
 struct SilicaDocument {
     var trackedTime: Int = 0
     var tileSize: Int = 0
+    var orientation: Int = 0
+    var flippedHorizontally: Bool = false
+    var flippedVertically: Bool = false
     
     var width: Int = 0
     var height: Int = 0
@@ -195,6 +198,9 @@ class Document: NSDocument {
         if getDocumentClassName(dict: dict) == DocumentClassName {
             info.trackedTime = (dict[TrackedTimeKey] as! NSNumber).intValue
             info.tileSize = (dict[TileSizeKey] as! NSNumber).intValue
+            info.orientation = (dict[OrientationKey] as! NSNumber).intValue
+            info.flippedHorizontally = (dict[FlippedHorizontallyKey] as! NSNumber).boolValue
+            info.flippedVertically = (dict[FlippedVerticallyKey] as! NSNumber).boolValue
             
             let sizeClassKey = dict[SizeKey]
             let sizeClassID = getClassID(id: sizeClassKey)
@@ -278,7 +284,7 @@ class Document: NSDocument {
     }
     
     func makeComposite() -> NSImage {
-        let image = NSImage(size: NSSize(width: info.width, height: info.height))
+        var image = NSImage(size: NSSize(width: info.width, height: info.height))
         image.lockFocus()
         
         let color = NSColor.white
@@ -302,7 +308,88 @@ class Document: NSDocument {
         }
         
         image.unlockFocus()
+        
+        if info.orientation == 3 {
+            image = image.imageRotatedByDegreess(degrees: 90)
+        } else if info.orientation == 4 {
+            image = image.imageRotatedByDegreess(degrees: -90)
+        }
+        
+        if info.flippedHorizontally && (info.orientation == 1 || info.orientation == 2) {
+            image = image.flipHorizontally()
+        } else if info.flippedHorizontally && (info.orientation == 3 || info.orientation == 4) {
+            image = image.flipVertically()
+        } else if info.flippedVertically && (info.orientation == 1 || info.orientation == 2) {
+            image = image.flipVertically()
+        } else if !info.flippedVertically && (info.orientation == 3 || info.orientation == 4) {
+            image = image.flipHorizontally()
+        }
+ 
         return image
     }
 }
 
+public extension NSImage {
+    func imageRotatedByDegreess(degrees:CGFloat) -> NSImage {
+        var imageBounds = NSMakeRect(0.0, 0.0, size.width, size.height)
+        
+        let pathBounds = NSBezierPath(rect: imageBounds)
+        var transform = NSAffineTransform()
+        transform.rotate(byDegrees: degrees)
+        pathBounds.transform(using: transform as AffineTransform)
+        
+        let rotatedBounds:NSRect = NSMakeRect(NSZeroPoint.x, NSZeroPoint.y, pathBounds.bounds.size.width, pathBounds.bounds.size.height )
+        let rotatedImage = NSImage(size: rotatedBounds.size)
+        
+        imageBounds.origin.x = NSMidX(rotatedBounds) - (NSWidth(imageBounds) / 2)
+        imageBounds.origin.y  = NSMidY(rotatedBounds) - (NSHeight(imageBounds) / 2)
+        
+        transform = NSAffineTransform()
+        transform.translateX(by: +(NSWidth(rotatedBounds) / 2 ), yBy: +(NSHeight(rotatedBounds) / 2))
+        transform.rotate(byDegrees: degrees)
+        transform.translateX(by: -(NSWidth(rotatedBounds) / 2 ), yBy: -(NSHeight(rotatedBounds) / 2))
+        
+        rotatedImage.lockFocus()
+        transform.concat()
+        
+        self.draw(in: imageBounds, from: .zero, operation: .copy, fraction: 1.0)
+        
+        rotatedImage.unlockFocus()
+        
+        return rotatedImage
+    }
+    
+    func flipHorizontally() -> NSImage {
+        let flipedImage = NSImage(size: size)
+        flipedImage.lockFocus()
+        
+        let transform = NSAffineTransform()
+        transform.translateX(by: size.width, yBy: 0.0)
+        transform.scaleX(by: -1.0, yBy: 1.0)
+        transform.concat()
+        
+        let rect = NSMakeRect(0, 0, size.width, size.height)
+        self.draw(at: .zero, from: rect, operation: .sourceOver, fraction: 1.0)
+        
+        flipedImage.unlockFocus()
+        
+        return flipedImage
+    }
+    
+    func flipVertically() -> NSImage {
+        let flipedImage = NSImage(size: size)
+        flipedImage.lockFocus()
+        
+        let transform = NSAffineTransform()
+        transform.translateX(by: 0.0, yBy: size.height)
+        transform.scaleX(by: 1.0, yBy: -1.0)
+        transform.concat()
+        
+        let rect = NSMakeRect(0, 0, size.width, size.height)
+        self.draw(at: .zero, from: rect, operation: .sourceOver, fraction: 1.0)
+        
+        flipedImage.unlockFocus()
+        
+        return flipedImage
+    }
+}
