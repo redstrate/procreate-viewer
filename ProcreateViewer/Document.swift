@@ -105,7 +105,7 @@ class Document: NSDocument {
         let y = Int(pathComponents[1])
         
         if x != nil && y != nil {
-            return (x!, y!)
+            return (x!, y! + 1)
         } else {
             return nil
         }
@@ -136,15 +136,13 @@ class Document: NSDocument {
             
             DispatchQueue.concurrentPerform(iterations: chunkPaths.count) { (i: Int) in
                 dispatchGroup.enter()
-
-                var threadArchive: Archive?
-                var threadEntry: Entry?
                 
-                queue.sync {
-                    threadArchive = Archive(data: self.data!, accessMode: Archive.AccessMode.read)
-                    threadEntry = threadArchive?[chunkPaths[i]]
+                guard let threadArchive = Archive(data: self.data!, accessMode: Archive.AccessMode.read) else {
+                    return
                 }
-        
+                    
+                let threadEntry = threadArchive[chunkPaths[i]]
+
                 guard let (x, y) = parseChunkFilename(filename: threadEntry!.path) else {
                     return
                 }
@@ -154,7 +152,7 @@ class Document: NSDocument {
                 
                 let uncompressedMemory = UnsafeMutablePointer<UInt8>.allocate(capacity: byteSize)
 
-                guard let lzoData = readData(archive: threadArchive!, entry: threadEntry!) else {
+                guard let lzoData = readData(archive: threadArchive, entry: threadEntry!) else {
                     return
                 }
                 
@@ -166,7 +164,7 @@ class Document: NSDocument {
                 
                 let imageData = Data(bytes: uncompressedMemory, count: byteSize)
                 
-                let render: CGColorRenderingIntent = CGColorRenderingIntent.defaultIntent
+                let render: CGColorRenderingIntent = .defaultIntent
                 let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
                 let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue).union(.byteOrder32Big)
                 let providerRef: CGDataProvider? = CGDataProvider(data: imageData as CFData)
