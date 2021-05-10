@@ -34,12 +34,12 @@ quick look at the file contents, simply extract them. Here's a sample directory 
 Reading back the actual raster information is extremely easy, most of this work as already been pioneered by  [jarmovogel's Procreate Viewer](https://github.com/jaromvogel/ProcreateViewer) and simply adapted to Swift. In short, each of the `.chunk` files is compressed via [LZO](https://en.wikipedia.org/wiki/Lempel–Ziv–Oberhumer). When uncompressed, it is just raw rgba data.
 
 ### Thumbnails
-When the document is modified in Procreate, they generate a PNG thumbnail automatically. This is located in the `QuickLook/Thumbnail.png`. This is used by Procreate's own thumbnail extension on iOS/iPadOS. Een though it's a thumbnail image, is actually pretty decent quality. This is also used by this app's QuickLook and Thumbnail extensions.
+When the document is modified in Procreate, they generate a PNG thumbnail automatically. This is located in the `QuickLook/Thumbnail.png`. This is used by Procreate's own thumbnail extension on iOS/iPadOS. Even though it's a thumbnail image, is actually pretty decent quality. This is also used by this app's QuickLook and Thumbnail extensions.
 
 ### Timelapse Video
-Procreate, just like with thumbnails and image data - continue to use nice and simple formats for storing data. This is no exception for timelapse video, which is simply a series of mp4's starting at `segment-1.mp4`. As far as I know, you can't glean the number of segments required for a full video ahead of time, so you must resort to listing the segments in the `video/segments` folder beforehand.
+Procreate, just like with thumbnails and image data - continue to use standard formats for storing data. This is no exception for timelapse video, which is simply a series of mp4's starting at `segment-1.mp4`. As far as I know, you can't glean the number of segments required for a full video ahead of time, so you must resort to listing the segments in the `video/segments` folder beforehand.
 
 ### Document Data
-Layer names, time spent and other data is located in `Document.archive`. This is the only hard to read file in Procreate documents, but it is a [NSKeyedArchive](https://developer.apple.com/documentation/foundation/nskeyedarchiver). In this app, we just use the [PropertyListSerialization](https://developer.apple.com/documentation/foundation/propertylistserialization) object to decode this in Swift.
+Layer names, time spent and other data is located in `Document.archive`. This is the only hard-to-read file in Procreate documents, but it is a [NSKeyedArchive](https://developer.apple.com/documentation/foundation/nskeyedarchiver). Here, we just use the [PropertyListSerialization](https://developer.apple.com/documentation/foundation/propertylistserialization) object to decode this in Swift.
 
 If you want more information please read [#2](https://github.com/redstrate/procreate-viewer/issues/2) where I break down the format of this file in more detail.
