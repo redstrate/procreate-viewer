@@ -14,6 +14,7 @@
 		030F700E2415C6B500A43F01 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F700D2415C6B500A43F01 /* PreviewViewController.swift */; };
 		030F70112415C6B500A43F01 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 030F700F2415C6B500A43F01 /* PreviewViewController.xib */; };
 		030F70162415C6B500A43F01 /* QuickLook.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 030F70082415C6B500A43F01 /* QuickLook.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		033F94F92648B8E200099FB7 /* TimelapseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F94F82648B8E200099FB7 /* TimelapseViewController.swift */; };
 		036AFBB8241687680075400A /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 036AFBB7241687680075400A /* ZIPFoundation */; };
 		036AFBBA24168C030075400A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036AFBB924168C030075400A /* ViewController.swift */; };
 		036AFBE32417F0A00075400A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 036AFBE12417F0A00075400A /* Main.storyboard */; };
@@ -87,6 +88,7 @@
 		030F70102415C6B500A43F01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
 		030F70122415C6B500A43F01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		030F70132415C6B500A43F01 /* Quicklook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Quicklook.entitlements; sourceTree = "<group>"; };
+		033F94F82648B8E200099FB7 /* TimelapseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelapseViewController.swift; sourceTree = "<group>"; };
 		036AFBB924168C030075400A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		036AFBE22417F0A00075400A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		036AFC0B241800350075400A /* Thumbnail.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Thumbnail.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +183,7 @@
 				037B4041241821D200392452 /* InfoViewController.swift */,
 				03CB382324191F620078B3E5 /* cbridge.c */,
 				03CB382224191F610078B3E5 /* ProcreateViewer-Bridging-Header.h */,
+				033F94F82648B8E200099FB7 /* TimelapseViewController.swift */,
 			);
 			path = ProcreateViewer;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03CB3840241A5AED0078B3E5 /* Shared.swift in Sources */,
+				033F94F92648B8E200099FB7 /* TimelapseViewController.swift in Sources */,
 				036AFBBA24168C030075400A /* ViewController.swift in Sources */,
 				03CB382424191F620078B3E5 /* cbridge.c in Sources */,
 				030F6FF42415C5E300A43F01 /* Document.swift in Sources */,

@@ -6,6 +6,8 @@ let NSKeyedArchiveVersion = 100000
 let ThumbnailPath = "QuickLook/Thumbnail.png"
 let DocumentArchivePath = "Document.archive"
 
+let VideoPath = "video/segments/"
+
 let DocumentClassName = "SilicaDocument"
 let TrackedTimeKey = "SilicaDocumentTrackedTimeKey"
 let LayersKey = "layers"

@@ -14,6 +14,8 @@ class ViewController: NSViewController {
         if(segue.identifier == "showInfo") {
             // TODO: there HAS to be a better way to pass the Document class along...
             (segue.destinationController as! InfoViewController).document = self.view.window?.windowController?.document as? Document
+        } else if(segue.identifier == "showTimelapse") {
+            ((segue.destinationController as! NSWindowController).contentViewController as! TimelapseViewController).document = self.view.window?.windowController?.document as? Document
         }
     }
 }
