@@ -619,7 +619,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer;
 				PRODUCT_NAME = "Procreate Viewer";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProcreateViewer/ProcreateViewer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -642,7 +642,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer;
 				PRODUCT_NAME = "Procreate Viewer";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProcreateViewer/ProcreateViewer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -661,7 +661,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer.QuickLook;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer.QuickLook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -680,7 +680,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer.QuickLook;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer.QuickLook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -700,7 +700,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer.Thumbnail;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer.Thumbnail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -720,7 +720,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.redstrate.ProcreateViewer.Thumbnail;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redstrate.ProcreateViewer.Thumbnail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
