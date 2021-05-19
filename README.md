@@ -4,7 +4,7 @@ quickly preview your files as well!
 
 ![screenshot](https://github.com/redstrate/procreate-viewer/blob/master/misc/screenshot.png?raw=true)
 
-I created this app because I frequently store backups of my Procreate documents on my computer, but you can't actually preview them! And if you're like, the files have nonsense or unusable names like "Untitled" or "Untitled 1", making file management harder.
+I created this app because I frequently store backups of my Procreate documents on my computer, but you can't actually preview them! And if you're like me, your files have nonsense or unusable names like "Untitled" or "Untitled 1", which makes file management harder.
 
 ## Usage
 Installing this app is simple, just open it at least once to register the QuickLook and thumbnail extensions to Finder. Although it's still experimental, you can view Procreate files in-app. Because blending modes are unsupported, only simpler canvases render correctly. 
