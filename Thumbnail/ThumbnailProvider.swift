@@ -4,17 +4,19 @@ import Cocoa
 
 class ThumbnailProvider: QLThumbnailProvider {
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
+        let standardError = NSError(domain: "procreate-viewer", code: 1, userInfo: nil)
+
         do {
             guard let archive = Archive(data: try Data(contentsOf: request.fileURL), accessMode: Archive.AccessMode.read) else {
-                return
+                throw standardError
             }
             
             guard let entry = archive[ThumbnailPath] else {
-                return
+                throw standardError
             }
             
             guard let thumbnailData = readData(archive: archive, entry: entry) else {
-                return
+                throw standardError
             }
             
             let image = NSImage(data: thumbnailData)
@@ -51,7 +53,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             handler(reply, nil)
         } catch {
             NSLog("Could not access file \(request.fileURL.lastPathComponent) to preview it")
-            handler(nil, nil)
+            handler(nil, standardError)
         }
     }
 }

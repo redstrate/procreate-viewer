@@ -15,16 +15,18 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         fc.coordinate(with: [intent], queue: .main) { (err) in
             if err == nil {
                 do {
+                    let standardError = NSError(domain: "procreate-viewer", code: 1, userInfo: nil)
+
                     guard let archive = Archive(data: try Data(contentsOf: intent.url), accessMode: Archive.AccessMode.read) else {
-                        return
+                        throw standardError
                     }
                     
                     guard let entry = archive[ThumbnailPath] else {
-                        return
+                        throw standardError
                     }
                     
                     guard let thumbnailData = readData(archive: archive, entry: entry) else {
-                        return
+                        throw standardError
                     }
 
                     self.imageView?.image = NSImage(data: thumbnailData)
@@ -32,9 +34,11 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     handler(nil)
                 } catch {
                     NSLog("Could not load file \(intent.url.lastPathComponent) to preview it")
+                    handler(err)
                 }
             } else {
                 NSLog("Could not find file \(intent.url.lastPathComponent) to preview it")
+                handler(err)
             }
         }
     }
